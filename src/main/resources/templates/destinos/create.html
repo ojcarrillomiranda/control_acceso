@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{adminlte_templates/base}">
+
+<head th:replace="adminlte_templates/base::head">
+	<meta charset="ISO-8859-1">
+	<title th:text="${titulo}">Crear Destino</title>
+</head>
+
+<body>
+	<div layout:fragment="contenido" class="content">
+		<div class="row" th:fragment="h1">
+			<div class="col-sm-6 mt-3">
+				<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+					<li class="breadcrumb-item"><a th:href="@{/destinos/buscar}">Ver Registros Fichas</a></li>
+					<li class="breadcrumb-item  active">Crear nuevo Destino</li>
+				</ol>
+			</div>
+		</div>
+		<div class="container mt-2 w-50">
+			<form th:action="@{/destinos/save}" th:object=${destino} method="POST">
+				<div class="card  border-secondary">
+					<div class="card-header bg-primary font-weight-bold h4 text-center text-white  shadow">
+						Registro de Destinos
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="form-group">
+								<input th:field="*{destinoCodigo}" type="hidden" class="form-control" />
+							</div>
+							<div class="col form-group mt-2">
+								<label class="label-name">DESTINO</label>
+								<input th:field="*{destinoNombre}" type="text" name="" class="form-control"
+									placeholder="Ingrese el Destino" required />
+							</div>
+							
+							<div class="col form-group  mt-2 ">
+								<label class="text-uppercase label-name" for="destino">COLOR </label>
+								<select onchange="cambiarColor()" th:field="*{color}" id="color" class="form-control" >
+									<option value="">Seleccione un color...</option>
+									<option class="option" th:each="color:${colores}" th:value="${color.colorCodigo}"
+											th:text="${color.colorNombre}"
+											th:style="${color.colorHexadecimal}"
+									/>
+								</select>
+							</div>
+
+						</div>
+						<div class="row" th:if="${editar}">
+
+							<div class="col form-group form-check ml-2">
+								<input th:field="*{destinoActivo}" th:checked="${destino != null}" type="checkbox"
+									class="form-check-input" id="exampleCheck1" />
+
+								<label class="form-check-label font-weight-bold" for="exampleCheck1">ACTIVAR O INACTIVAR</label>
+							</div>
+
+
+						</div>
+
+						<div class="card-footer">
+							<button id="guardar" type="submit" class="btn btn-primary btn-crear"><i
+									class="fas fa-save"></i>
+								Guardar</button>
+							<button id="limpiar" type="reset" class="btn btn-danger  btn-crear"><i
+									class='fas fa-broom'></i>
+								Limpiar</button>
+							<a id="atras" th:href="@{/destinos/buscar}" class="btn btn-success btn-crear"
+								title="Atras"><i class="fas fa-arrow-circle-left"></i> Atras</a>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<!--OTRO SCRIPTS PARA PAGINAS-->
+	<th:block layout:fragment="page-scripts">
+	<script>
+	function cambiarColor(){
+				var seleccion = document.getElementById("color");
+				var comparar = seleccion.options[seleccion.selectedIndex].value;
+
+				if (comparar == 1){
+						seleccion.style.cssText="background:#FC1A1A;font-weight:bold;color:white";
+					}
+					else if (comparar == 2){
+						seleccion.style.cssText="background:#05A10C;font-weight:bold;color:white";
+					}
+					else if (comparar == 3){
+						seleccion.style.cssText="background:#9914F6;font-weight:bold;color:white";
+					}
+					else if (comparar == 4){
+						seleccion.style.cssText="background:#3498DB;font-weight:bold;color:white";
+					}	
+					else {
+						seleccion.style.background="none";
+					}
+
+
+			}
+	</script>		
+	
+	</th:block>
+
+</body>
+
+</html>

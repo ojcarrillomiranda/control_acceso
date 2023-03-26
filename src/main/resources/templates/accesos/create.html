@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{adminlte_templates/base}">
+
+<head th:replace="adminlte_templates/base::head">
+	<meta charset="ISO-8859-1">
+	<title th:text="${titulo}">Crear Acceso</title>
+</head>
+
+<body>
+	<div layout:fragment="contenido" class="content">
+		<div class="row" th:fragment="h1">
+			<div class="col-sm-6 mt-3">
+				<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+					<li class="breadcrumb-item"><a th:href="@{/accesos/buscar}">Ver Registros Accesos</a></li>
+					<li class="breadcrumb-item  active">Crear nuevo Acceso</li>
+				</ol>
+			</div>
+		</div>
+
+		<div class="container-fluid mt-2">
+			<form th:action="@{/accesos/save}" th:object="${acceso}" method="POST">
+				<div class="card">
+					<div th:if="${editar == null}"
+						class="card-header bg-primary font-weight-bold h4 text-center text-white  shadow">
+						Registro de Accesos
+					</div>
+					<div th:if="${editar}"
+						class="card-header bg-primary font-weight-bold h4 text-center text-white  shadow">
+						Actualizar Registros de Accesos
+					</div>
+
+					<!--PRIMERA FILA    -->
+					<div class="card-body">
+						<div class="row">
+
+
+							<div class="col form-group ">
+								<label>Ciudad</label>
+								<select th:field="*{ciudad}" id="ciudad" class="form-control" required>
+									<option th:each="ciudad:${ciudades}" th:value=${ciudad.ciudadCodigo}
+										th:text="${ciudad.ciudadNombre}" />
+								</select>
+							</div>
+
+							<div class="col form-group" th:if="${editar == null}">
+								<label>Fecha y Hora entrada</label>
+								<input name="accesoFechaIngreso" th:field="*{accesoFechaIngreso}" type="datetime-local"
+									class="form-control" />
+							</div>
+							<div class="col form-group" th:if="${editar}">
+								<label>Fecha y Hora entrada</label>
+								<input name="accesoFechaIngreso" th:field="*{accesoFechaIngreso}" type="datetime-local"
+									class="form-control" readonly />
+							</div>
+
+							<div class="col form-group" th:if="${editar}">
+								<label>Fecha y Hora de Salida</label>
+								<input th:field="*{accesoFechaSalida}" type="datetime-local" class="form-control" />
+							</div>
+						</div>
+
+
+						<!--SEGUNDA FILA    -->
+						<div class="card card-default shadow">
+							<div class="card-header bg-secondary">
+								<h3 class="card-title font-weight-bold text-uppercase text-center">Visitantes</h3>
+							</div>
+
+							<div class="card-body ">
+								<div class="row">
+
+									<div class="col form-group" hidden>
+										<label>ID</label>
+										<input id="visitante_codigo" th:field="*{visitante}" type="text"
+											class="form-control" />
+									</div>
+
+									<div class="col form-group" th:if="${editar == null}">
+										<label class="label-name">Identificacion</label>
+										<input id="visitanteIdentificacion" type="search" name="" class="form-control"
+											required autofocus placeholder="Ingrese su identificacion..." />
+									</div>
+									<div class="col form-group" th:if="${editar}">
+										<label class="label-name">Identificacion</label>
+										<input id="visitanteIdentificacion" type="search" name="" class="form-control"
+											th:value="${{acceso.visitante.visitanteIdentificacion}}" readonly />
+									</div>
+
+									<div class="col form-group">
+										<label class="label-name">Apellidos</label>
+										<input id="visitanteApellidos" type="text" class="form-control"
+											th:value="${{acceso.visitante.visitanteApellidos}}" />
+									</div>
+
+
+									<div class="col form-group">
+										<label class="label-name">Nombres</label>
+										<input id="visitanteNombres" type="text" class="form-control"
+											th:value="${{acceso.visitante.visitanteNombres}}" />
+									</div>
+
+									<div class=" col form-group">
+										<label class="label-name">Telefono</label>
+										<input id="visitanteTelefono" type="number" class="form-control"
+											th:value="${{acceso.visitante.visitanteTelefono}}" />
+									</div>
+
+
+								</div>
+							</div>
+						</div>
+
+
+						<!--TERCERA FILA    -->
+
+						<div class="card card-default shadow">
+							<div class="card-header bg-secondary ">
+								<h3 class="card-title font-weight-bold text-uppercase">Vehiculo</h3>
+							</div>
+
+							<div class="card-body">
+								<div class="row">
+
+									<div class="col form-group" hidden>
+										<label>ID</label>
+										<input id="vehiculo_codigo" th:field="*{vehiculo}" type="text"
+											class="form-control" />
+									</div>
+
+									<div class="col form-group" th:if="${editar == null}">
+										<label class="label-name">Placa</label>
+										<input id="vehiculoPlaca" type="search" name="" class="form-control" />
+									</div>
+
+									<div class="col form-group" th:if="${editar}">
+										<label class="label-name">Placa</label>
+										<input id="vehiculoPlaca" type="search" name="" class="form-control" readonly
+											th:value="${{acceso.vehiculo.vehiculoPlaca}}" />
+									</div>
+
+									<div class="col form-group">
+										<label>Modelo</label>
+										<input id="vehiculoModelo" type="text" class="form-control"
+											th:value="${{acceso.vehiculo.vehiculoModelo}}" />
+									</div>
+
+									<div class="col form-group">
+										<label>Color</label>
+										<input id="vehiculoColor" type="text" class="form-control"
+											th:value="${{acceso.vehiculo.vehiculoColor}}" />
+									</div>
+
+									<div class="col form-group">
+										<label>Clase</label>
+										<input id="vehiculoClase" type="text" class="form-control"
+											th:value="${{acceso.vehiculo.vehiculoClase}}" />
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+
+
+
+						<!--CUARTA FILA    -->
+						<div class="card card-default shadow">
+							<div class="card-header bg-secondary">
+								<h2 class="card-title font-weight-bold text-uppercase center">Destino</h2>
+							</div>
+							<div class="card-body">
+								<div class="row">
+									<div class="form-group" hidden>
+										<label>ID</label>
+										<input type="text" class="form-control" />
+									</div>
+
+
+									<div class="col form-group">
+										<label class="label-name">Destino</label>
+										<select id="destino" class="form-control" onchange="filtrosDestinos()"
+											name="destino">
+											<option value="">Seleccione un destino...</option>
+											<option th:each="destino:${destinos}" th:value=${destino.destinoCodigo}
+												th:text="${destino.destinoNombre}" />
+										</select>
+									</div>
+
+
+									<div class="col form-group letra" id="subdestinos">
+
+									</div>
+
+
+
+									<div class="col form-group" id="div-acciones">
+										<label class="label-name">Motivo Visita</label>
+										<select onchange="habilitarFichas()" th:field="*{accion}" id="accion" class="form-control">
+											<option value="">Seleccione motivo visita...</option>
+										</select>
+
+									</div>
+
+									
+									<div class=" form-group" id="div-fichas" >
+										<label class="label-name">Escoja una Ficha</label>
+										<select th:style="${color}" th:field="*{ficha}" id="ficha" class="form-control">
+											
+										</select>
+ 
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<!--QUINTA FILA    -->
+
+						<div class="card card-default shadow">
+							<div class="card-header bg-secondary text-center">
+								<h2 class="card-title font-weight-bold text-uppercase">CLIENTE ENTRADA</h2>
+							</div>
+
+							<div class="card-body">
+								<div class="row">
+									<div class="form-group" hidden>
+										<label>ID</label>
+										<input type="text" class="form-control" />
+									</div>
+
+									<div class="col form-group  mt-2 ">
+										<label class="text-uppercase label-name" for="cliente">CLIENTE ENTRADA</label>
+										<select th:field="*{clienteEntrada}" id="cliente" class="form-control" required>
+											<option value="">Seleccione un cliente..</option>
+											<option th:each="cliente:${clientes}" th:value=${cliente.clienteCodigo}
+												th:text="${cliente.clienteNombre}" />
+										</select>
+									</div>
+
+									<div class="col form-group  mt-2 " th:if="${editar}">
+										<label class="text-uppercase label-name" for="cliente">CLIENTE SALIDA</label>
+										<select th:field="*{clienteSalida}" id="cliente" class="form-control">
+											<option value="">Seleccione un cliente..</option>
+											<option th:each="cliente:${clientes}" th:value=${cliente.clienteCodigo}
+												th:text="${cliente.clienteNombre}" />
+										</select>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="card-footer">
+					<button id="guardar" type="submit" class="btn btn-primary btn-crear"><i class="fas fa-save"></i>
+						Guardar</button>
+					<button id="limpiar" type="reset" class="btn btn-danger  btn-crear"><i class='fas fa-broom'></i>
+						Limpiar</button>
+					<a id="atras" th:href="@{/accesos/buscar}" class="btn btn-success btn-crear" title="Atras"><i
+							class="fas fa-arrow-circle-left"></i> Atras</a>
+				</div>
+
+		</div>
+		</form>
+	</div>
+
+
+
+	</div>
+
+	<!--OTRO SCRIPTS PARA PAGINAS-->
+	<th:block layout:fragment="page-scripts">
+		<script th:inline="javascript">
+
+			const $destino = $('#destino'),
+					$divAcciones = $('#div-acciones').css("visibility","hidden"),
+					$divFichas = $('#div-fichas').css("visibility","hidden");
+
+			function filtrosDestinos() {
+				$divAcciones.css("visibility","hidden");
+				$('#accion').val("");
+				$divFichas.css("visibility","hidden")
+				subdestinos();
+			
+			}
+
+			function filtrosSubdestinos() {
+				acciones();
+
+			}
+			
+			function habilitarFichas(){
+				fichas();
+				$divFichas.css("visibility","visible")
+			}
+
+			function subdestinos() {
+				let html = '';
+				let color = '';
+				let subdestinos = /*[[${subdestinos}]]*/
+					subdestinos.forEach(function (data) {
+						if (data.destino.destinoCodigo == $destino.val()) {
+							html += `<option value=${data.subDestinoCodigo}> ${data.subDestinoNombre}</option>`;
+							color = data.destino.color.colorHexadecimal;
+						}
+					}
+					);
+					let background = color.substring(11);
+
+				//arma el selected del subdestino filtrado por el destino
+				let select = `<label class="label-name">Subdestino</label>
+										<select  onchange="filtrosSubdestinos()" th:field="*{subdestino}" id="subdestino" class="form-control">
+											<option value="">Seleccione un subdestino...</option>
+											${html}
+										</select>`;
+
+				$('#subdestinos').html(select);
+			}
+
+			function fichas() {
+				let html = '';
+				let color = '';
+				let fichas = /*[[${fichas}]]*/
+					fichas.forEach(function (data) {
+						if (data.destino.destinoCodigo == $destino.val() && data.fichaActivo) {
+							color = data.destino.color.colorHexadecimal;
+							html += `<option style="font-weight:bold;color:white;text-align:center;font-size:18px" value=${data.fichaCodigo}> ${data.fichaNumero}</option>`;
+						}
+					}
+					);
+					
+				let background = color.substring(11)
+				$('#ficha').css({"background":background,"font-weight":"bold","color":"white","box-shadow":"0px 11px 5px -7px #000","border":"none"});
+				$('#ficha').html(html);
+
+			}
+
+			function acciones() {
+				let html = '';
+				let acciones = /*[[${acciones}]]*/
+					acciones.forEach(function (data) {
+						if (data.subDestino.subDestinoCodigo == $('#subdestino').val()) {
+							html += `<option value=${data.accionCodigo}> ${data.accionNombre}</option>`;
+						}
+					}
+					);
+			
+				$('#accion').append(html);
+				$divAcciones.css("visibility","visible");
+				
+				//$divFichas.css("visibility","visible")
+			}
+
+			$(document).ready(function () {
+				$("#visitanteIdentificacion").autocomplete({
+					minLength: 2,
+					source: function (request, response) {
+						$.ajax({
+							url: "/visitantes/ajax/" + request.term,
+							dataType: "json",
+							data: {
+								term: request.term
+							},
+							success: function (data) {
+
+
+								response($.map(data, function (item) {
+									return {
+										label: item.visitanteIdentificacion,
+										id: item.visitanteCodigo,
+										nombres: item.visitanteNombres,
+										apellidos: item.visitanteApellidos,
+										telefono: item.visitanteTelefono
+									}
+								}))
+							}
+						});
+					},
+					select: function (event, ui) {
+						$("#visitante_codigo").val(ui.item.id);
+						$("#visitanteNombres").val(ui.item.nombres);
+						$("#visitanteNombres").css('background-color', '#e9ecef').css('color', '#525558').css('border-bottom', 'solid 2px blue').css({boxShadow: '1px 3px 6px #444'});
+						$("#visitanteApellidos").val(ui.item.apellidos);
+						$("#visitanteApellidos").css('background-color', '#e9ecef').css('color', '#525558').css('border-bottom', 'solid 2px blue').css({boxShadow: '1px 3px 6px #444'});
+						$("#visitanteTelefono").val(ui.item.telefono);
+						$("#visitanteTelefono").css('background-color', '#e9ecef').css('color', '#525558').css('border-bottom', 'solid 2px blue').css({boxShadow: '1px 3px 6px #444'});
+					}
+				});
+			});
+
+
+			$(document).ready(function () {
+				$("#vehiculoPlaca").autocomplete({
+					minLength: 2,
+					source: function (request, response) {
+						$.ajax({
+							url: "/vehiculos/ajax/" + request.term,
+							dataType: "json",
+							data: {
+								term: request.term
+							},
+							success: function (data) {
+								response($.map(data, function (item) {
+
+									return {
+										label: item.vehiculoPlaca,
+										id: item.vehiculoCodigo,
+										modelo: item.vehiculoModelo,
+										color: item.vehiculoColor,
+										clase: item.vehiculoClase
+
+									}
+								}))
+							}
+						});
+					},
+					select: function (event, ui) {
+						$("#vehiculo_codigo").val(ui.item.id);
+						$("#vehiculoPlaca").val(ui.item.placa);
+						$("#vehiculoModelo").val(ui.item.modelo);
+						$("#vehiculoModelo").css('background-color', '#e9ecef').css('color', '#525558').css('border-bottom', 'solid 2px blue').css({boxShadow: '1px 3px 6px #444'});
+						$("#vehiculoColor").val(ui.item.color);
+						$("#vehiculoColor").css('background-color', '#e9ecef').css('color', '#525558').css('border-bottom', 'solid 2px blue').css({boxShadow: '1px 3px 6px #444'});
+						$("#vehiculoClase").val(ui.item.clase);
+						$("#vehiculoClase").css('background-color', '#e9ecef').css('color', '#525558').css('border-bottom', 'solid 2px blue').css({boxShadow: '1px 3px 6px #444'});
+
+
+					}
+				});
+			});
+		</script>
+		<script th:src="@{/js/webcam/camara2.js}"></script>
+	</th:block>
+
+
+
+</body>
+
+</html>

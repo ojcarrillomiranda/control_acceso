@@ -1,0 +1,73 @@
+.btn-crear{
+	margin: 0px 5px;
+	transition: ease-in-out all 300ms;
+}
+.btn-crear:hover{
+	transform: scale(1.1);
+}
+.crear-nuevo{
+	z-index: 1;
+	position: absolute;
+	top: 146px;
+	left: 503px;
+}
+.thead{
+	position: sticky;
+	top: 57px ;
+}
+.fa-circle:before {
+	font-size: 12px;
+	font-weight: bold;
+}
+.li-subdestinos{
+	font-size: 15px !important;
+}
+.nav-item .primera-p{
+	font-weight: bold;
+}
+.small-box{
+	transition: all ease-in-out 310ms;
+}
+.small-box:hover{
+	transform: scaleY(1.040);
+	border-top: solid 5px #000;
+}
+.inner{
+	font-weight: bold;
+}
+.option{
+	font-weight: bold;
+	color: white;
+	text-align: center;
+}
+.btn-foto{
+	transition: all ease-in 200ms;
+}
+.btn-foto:hover{
+	transform: scale(1.020);
+}
+#guardar{
+	box-shadow:inset 2px -2px 6px 3px #034681;
+}
+
+#limpiar{
+	box-shadow:inset 2px -2px 6px 3px rgb(153 9 9);
+}
+
+#atras{
+	box-shadow:inset 2px -2px 6px 3px #186a16;
+}
+
+#camara{
+	width: 220px;
+	height: 220px;
+
+}
+#foto{
+	width: 160px;
+}
+
+#color_destino,#color_ficha{
+	font-weight: bold;
+	color: white;
+}

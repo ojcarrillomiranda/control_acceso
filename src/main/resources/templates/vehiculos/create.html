@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{adminlte_templates/base}">
+
+<head th:replace="adminlte_templates/base::head">
+	<meta charset="ISO-8859-1">
+	<title th:text="${titulo}">Crear Vehiculo</title>
+</head>
+
+<body>
+	<div layout:fragment="contenido" class="content">
+		<div class="row" th:fragment="h1">
+			<div class="col-sm-6 mt-3">
+				<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+					<li class="breadcrumb-item"><a th:href="@{/vehiculos/buscar}">Ver Registros Placas</a></li>
+					<li class="breadcrumb-item  active">Crear nueva Placa</li>
+				</ol>
+			</div>
+		</div>
+		<div class="container mt-2">
+			<form th:action="@{/vehiculos/save}" th:object=${vehiculo} method="POST">
+				<div class="card  border-secondary">
+					<div class="card-header bg-primary font-weight-bold h4 text-center text-white  shadow">
+						Registro de Vehiculos
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="form-group" hidden>
+								<label>ID</label>
+								<input th:field="*{vehiculoCodigo}" type="text" class="form-control" />
+							</div>
+							<div class="col form-group  mt-2 ">
+								<label class="text-uppercase label-name" for="claseVehiculo">Clase Vehiculo</label>
+								<select th:field="*{vehiculoClase}" class="form-control" id="claseVehiculo" required>
+									<option value="">Seleccione una opcion...</option>
+									<option value="Tracto Camion">Tracto Camion</option>
+									<option value="Automovil">Automovil</option>
+									<option value="Motocicleta">Motocicleta</option>
+									<option value="Bicicleta">Bicicleta</option>
+									<option value="Otro">Otro</option>
+								</select>
+							</div>
+							<div class="col form-group mt-2">
+								<label class="label-name">PLACA</label>
+								<input th:field="*{vehiculoPlaca}" type="text" name="" class="form-control"
+									placeholder="Ingrese placa" />
+							</div>
+							<div class="col form-group mt-2">
+								<label class="label-name">TRAILER</label>
+								<input id="vehiculoTrailer" th:field="*{vehiculoTrailer}" type="text"
+									class="form-control" placeholder="Ingrese el numero de trailer..." />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col form-group mt-2">
+								<label class="text-uppercase label-name">COLOR</label>
+								<input th:field="*{vehiculoColor}" type="text" class="form-control"
+									placeholder="Ingrese color" />
+							</div>
+							<div class="col form-group mt-2">
+								<label class="text-uppercase label-name">MODELO</label>
+								<input th:field="*{vehiculoModelo}" type="text" class="form-control"
+									placeholder="Ingrese el primer apellido..." />
+							</div>
+						</div>
+						<div class="card-footer">
+							<button id="guardar" type="submit" class="btn btn-primary btn-crear"><i
+									class="fas fa-save"></i>
+								Guardar</button>
+							<button id="limpiar" type="reset" class="btn btn-danger  btn-crear"><i
+									class='fas fa-broom'></i>
+								Limpiar</button>
+							<a id="atras" th:href="@{/vehiculos/buscar}" class="btn btn-success btn-crear"
+								title="Atras"><i class="fas fa-arrow-circle-left"></i> Atras</a>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<!--OTRO SCRIPTS PARA PAGINAS-->
+	<th:block layout:fragment="page-scripts"></th:block>
+
+</body>
+
+</html>

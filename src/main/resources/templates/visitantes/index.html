@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{adminlte_templates/base}">
+
+<head th:replace="adminlte_templates/base::head">
+	<meta charset="ISO-8859-1">
+	<title>Ver Visitantes</title>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+
+	<div layout:fragment="contenido">
+		<div class="row mb-2" th:fragment="h1">
+			<div class="col-sm-6">
+				<h1 class="m-0">REGISTROS</h1>
+			</div>
+
+			<div class="col-sm-6">
+				<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+					<li class="breadcrumb-item"><a th:href="@{/visitantes/crear}">Crear Nuevo</a></li>
+					<li class="breadcrumb-item  active">Registros</li>
+				</ol>
+			</div>
+		</div>
+
+		<div class="container-fluid mt-4">
+			<a th:href="@{/visitantes/crear}" class="crear_visitante btn btn-primary btn-crear" title="Registrar visitante">&#10010;</a>
+			<div class="card mt-3">
+				<div class="card-visitante card-body">
+					<table id="tabla_visitante"
+						class="table table-hover table-striped table-sm table-responsive-md table-bordered text-center mt-5">
+						<thead class="bg-primary thead text-center">
+							<tr class=" th mt-4 th  text-white ">
+								<th style="text-align: center;">ID </th>
+								<th style="text-align: center;">Identificacion</th>
+								<th style="text-align: center;">Apellidos</th>
+								<th style="text-align: center;">Nombres</th>||||||
+								<th style="text-align: center;">Arl</th>
+								<th style="text-align: center;">Fecha Vencimiento Arl</th>
+								<th class="text-center">&#128222; </th>
+								<th style="text-align: center;">ACCIONES </th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="visitante:${visitantes}">
+								<td class="align-middle" th:text="${visitante.visitanteCodigo}"></td>
+								<td class="align-middle" th:text="${visitante.visitanteIdentificacion}"></td>
+								<td class="align-middle" th:text="${visitante.visitanteApellidos}"></td>
+								<td class="align-middle" th:text="${visitante.visitanteNombres}"></td>
+								<td>
+									<img class="btn-crear" th:src="@{${visitante.visitanteArlRuta} +'/'+ ${visitante.visitanteArlArchivo}} " width="80" height="40">
+								</td>
+								<td class="align-middle" th:text="${visitante.visitanteArlFechaVencimiento}"></td>
+								<td class="align-middle" th:text="${visitante.visitanteTelefono}"></td>
+								<td>
+									<a th:href="@{/visitantes/editar/} +${visitante.visitanteCodigo}" class="btn btn-outline-info"><i class="far fa-edit"></i></a>
+									<a th:href="@{/visitantes/eliminar/}+${visitante.visitanteCodigo}" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+		<!--OTRO SCRIPTS PARA PAGINAS-->
+		<th:block layout:fragment="page-scripts">
+			<div th:if="${guardar != null}">
+				<script>
+				Swal.fire({
+				  title: 'Genial',
+				  text: 'El registro ha sido guardado con exito!',
+				  icon: 'success',
+				  showClass: {
+					popup: 'animate__animated animate__rubberBand'
+				  },
+				  hideClass: {
+					popup: 'animate__animated animate__fadeOutUp'
+				  }
+				})
+				</script>
+			</div>
+			<script>
+
+				$(document).ready(function () {
+					$('#tabla_visitante').DataTable({
+						dom: 'lfBrtip',
+						"language": {
+							"lengthMenu": "Mostrar _MENU_ resgistros",
+							"zeroRecords": "No se encontraron resultados",
+							"info": "Mostrando registros del _START_ al _END_  de un total de  _TOTAL_ registros",
+							"infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+							"infoFiltered": "(Filtrado de un total de _MAX_ registros)",
+							"sSearch": "Buscar",
+							"oPaginate": {
+								"sFirst": "Primero",
+								"sLast": "Ultimo",
+								"sNext": "	&#10145;",
+								"sPrevious": "	&#11013;",
+							},
+							"sProcessing": "Procesando..."
+						},
+						responsive: true, "lengthChange": true, "autoWidth": true,
+						buttons: [{
+							extend: "pdf",
+							text: '<button class="btn btn-white text-white font-weight-bold btn-crear p-1">Pdf <i class="fas fa-file-pdf"></i></button>'
+						},
+						{
+							extend: "excel",
+							text: '<button class="btn btn-white text-white font-weight-bold btn-crear p-1">Xls <i class="fas fa-file-excel"></i></button>'
+						}
+						]
+					});
+				});
+			</script>
+		</th:block>
+</body>
+</html>

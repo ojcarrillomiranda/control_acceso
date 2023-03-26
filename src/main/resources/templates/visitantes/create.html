@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{adminlte_templates/base}">
+
+<head th:replace="adminlte_templates/base::head">
+    <meta charset="ISO-8859-1">
+    <title th:text="${titulo}">Crear visitante</title>
+</head>
+
+<body>
+
+
+<div layout:fragment="contenido" class="content">
+    <div class="row" th:fragment="h1">
+        <div class="col-sm-6 mt-3">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/visitantes/buscar}">Ver Registros</a></li>
+                <li th:text="${new_edit}" class="breadcrumb-item  active">Crear nuevo</li>
+            </ol>
+        </div>
+    </div>
+    <div class="container mt-2">
+
+        <form th:action="@{/visitantes/save}" th:object=${visitante} method="POST" enctype="multipart/form-data">
+            <div class="card  border-secondary">
+                <div class="card-header bg-primary font-weight-bold h4 text-center text-white  shadow">
+                    Registro de Visitantes
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group" hidden>
+                            <label>ID</label>
+                            <input th:field="*{visitanteCodigo}" type="text" class="form-control"/>
+                        </div>
+
+
+                        <div class="col-12 col-sm 6 form-group mt-2">
+                            <label class="label-name">Apellidos</label>
+                            <input th:field="*{visitanteApellidos}" type="text" class="form-control" required
+                                   placeholder="Ingrese los apellidos..." autofocus/>
+                        </div>
+                        <div class="col-12 col-sm 6 form-group mt-2">
+                            <label class="label-name">Nombres</label>
+                            <input id="visitanteNombres" th:field="*{visitanteNombres}" type="text" class="form-control"
+                                   required
+                                   placeholder="Ingrese los nombres..."/>
+                        </div>
+                        <div class="col-12 col-sm 6 form-group mt-2">
+                            <label class="label-name">Identificacion</label>
+                            <input th:field="*{visitanteIdentificacion}" type="search" name="" class="form-control"
+                                   required
+                                   autofocus placeholder="Ingrese su identificacion..."/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class=" col-12 col-sm-6 form-group mt-2">
+                            <label class="label-name">Telefono</label>
+                            <input th:field="*{visitanteTelefono}" type="number" class="form-control"
+                                   placeholder="Ingrese el telefono..." required/>
+                        </div>
+                        <div class=" col-12 col-sm-6 form-group mt-2">
+                            <label>Vencimiento ARL</label>
+                            <input th:field="*{visitanteArlFechaVencimiento}" type="date" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="row" modelAttribute="foto">
+                        <div class="col-md-12 mt-3 ">
+                            <div class="card card-default">
+                                <div class="card-header">
+                                    <h3 class="card-title font-weight-bold text-uppercase">Subir Archivos</h3>
+                                </div>
+                                <div class="card-body  shadow">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-6 form-group">
+                                            <label for="arlArchivoImagen">Seleccione Archivo Arl</label>
+                                            <input type="file" class="form-control-file" name="arlArchivoImagen"
+                                                   id="arlArchivoImagen">
+                                        </div>
+                                        <div class="col-12 col-sm-6 form-group mt-3">
+                                            <button id="verVideo" type="button" class="btn btn-danger font-weight-bold">
+                                                Tomar foto
+                                            </button>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div id="camara"></div>
+                                                    <div id="results"></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div id="tomarFoto">
+                                                        <!-- This button is shown before the user takes a snapshot -->
+                                                        <button class="btn btn-primary btn-foto" id="tomar-foto"
+                                                                type=button
+                                                                value="Tomar Foto" onClick="preview_snapshot()">
+                                                            <img class="img-fluid mr-2" th:src="@{/img/camara.png}"><b>Tomar
+                                                            foto</b>
+                                                        </button>
+                                                        <button class="btn btn-danger mt-2 btn-foto" id="foto"
+                                                                type=button
+                                                                value="Tomar Foto" onClick="apagar()">
+                                                            <img class="img-fluid mr-2" th:src="@{/img/off.png}"><b>Cancelar</b>
+                                                        </button>
+                                                    </div>
+                                                    <div id="atras_guardar" style="display:none">
+                                                        <!-- These buttons are shown after a snapshot is taken -->
+                                                        <button class="btn btn-info btn-foto" id="back" type=button
+                                                                value="Tomar Foto" onClick="cancel_preview()">
+                                                            <img class="img-fluid mr-2" th:src="@{/img/atras.png}"><b>Tomar
+                                                            Nueva Foto</b>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button id="guardar" type="submit" class="btn btn-primary btn-crear"><i class="fas fa-save"></i>
+                        Guardar
+                    </button>
+                    <button id="limpiar" type="reset" class="btn btn-danger  btn-crear"><i class='fas fa-broom'></i>
+                        Limpiar
+                    </button>
+                    <a id="atras" th:href="@{/visitantes/buscar}" class="btn btn-success btn-crear" title="Atras"><i
+                            class="fas fa-arrow-circle-left"></i> Atras</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--OTRO SCRIPTS PARA PAGINAS-->
+<th:block layout:fragment="page-scripts">
+    <script th:src="@{/js/webcam/webcam.min.js}"></script>
+    <script>
+
+        $(document).ready(function () {
+            $("#visitanteIdentificacion").autocomplete({
+                minLength: 2,
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/visitantes/ajax/" + request.term,
+                        dataType: "json",
+                        data: {
+                            term: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.visitanteIdentificacion,
+                                    nombres: item.visitanteNombres,
+                                    apellidos: item.visitanteApellidos,
+                                    telefono: item.visitanteTelefono
+                                }
+                            }))
+                        }
+                    });
+                },
+                select: function (event, ui) {
+                    $("#visitanteNombres").val(ui.item.nombres);
+                    $("#visitanteApellidos").val(ui.item.apellidos);
+                    $("#visitanteTelefono").val(ui.item.telefono);
+                }
+            });
+        });
+    </script>
+    <script th:src="@{/js/webcam/camara.js}"></script>
+</th:block>
+
+
+</body>
+
+</html>
